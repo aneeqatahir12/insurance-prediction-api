@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
+from fastapi.middleware.cors import CORSMiddleware
 
 # Creating blueprint
 class InsuranceData(BaseModel):
@@ -12,6 +13,14 @@ class InsuranceData(BaseModel):
     region: int
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,   # <-- change this
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Loading trained model
 model = joblib.load("insurance_model.pkl")
